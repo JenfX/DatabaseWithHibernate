@@ -98,7 +98,7 @@ public class UserDaoHibernate implements UserDao{
     }
 
     @Override
-    public boolean emailExist(String email) {
+    public boolean emailExists(String email) {
         try {
             log.info("Запрос в БД на уникальность email");
             return sessionFactory.fromSession(session ->

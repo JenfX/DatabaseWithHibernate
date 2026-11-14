@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import userservice.exception.ValidationException;
 
 public class UserServiceDao implements UserService{
 
@@ -20,7 +21,15 @@ public class UserServiceDao implements UserService{
 
     @Override
     public User create(User user) {
-        return userDao.create(user);
+        validate(user);
+
+        if (userDao.emailExists(user.getEmail())) {
+            log.warn("Отказ в создании: email {} уже занят", user.getEmail());
+            throw new ValidationException("Email уже занят: " + user.getEmail());
+        }
+        User saved = userDao.create(user);
+        log.info("Создан пользователь id={}", saved.getId());
+        return saved;
     }
 
     @Override
@@ -42,5 +51,19 @@ public class UserServiceDao implements UserService{
     }
 
     @Override
-    public boolean emailExist(String email) {return userDao.emailExist(email); }
+    public boolean emailExists(String email) {return userDao.emailExists(email); }
+
+    private void validate(User user) {
+        String name = user.getName();
+        if (name == null || name.isBlank()) {
+            throw new ValidationException("Имя не может быть пустым");
+        }
+        if (name.length() > MAX_NAME_LENGTH) {
+            throw new ValidationException("Имя длиннее " + MAX_NAME_LENGTH + " символов");
+        }
+        Integer age = user.getAge();
+        if (age != null && (age < 0 || age > 150)) {
+            throw new ValidationException("Возраст должен быть от 0 до 150");
+        }
+    }
 }

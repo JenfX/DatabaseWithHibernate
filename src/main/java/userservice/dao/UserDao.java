@@ -10,5 +10,5 @@ public interface UserDao {
     User update(User user);
     boolean delete(Long id);
     List<User> readAll();
-    boolean emailExist(String email);
+    boolean emailExists(String email);
 }

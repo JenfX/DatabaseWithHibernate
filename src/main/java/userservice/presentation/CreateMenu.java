@@ -22,7 +22,7 @@ public class CreateMenu extends Menu{
         String email;
         while (true) {
             email = console.readEmail("Email: ");
-            if (!service.emailExist(email)) break;
+            if (!service.emailExists(email)) break;
             else System.out.println("Email уже занят.");
         }
 
