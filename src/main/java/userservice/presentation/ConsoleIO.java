@@ -1,8 +1,11 @@
 package userservice.presentation;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+@Component
 public class ConsoleIO {
     private final Scanner scanner = new Scanner(System.in);
     private static final Pattern EMAIL = Pattern.compile("^[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+$");
